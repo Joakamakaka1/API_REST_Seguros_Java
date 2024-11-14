@@ -5,6 +5,7 @@ import com.es.segurosinseguros.exception.BadRequestException;
 import com.es.segurosinseguros.exception.ResourceNotFoundException;
 import com.es.segurosinseguros.exception.ValidationException;
 import com.es.segurosinseguros.service.SegurosService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +15,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/seguros") // -> http://localhost:8080/seguros
 public class SeguroController {
+    @Autowired
     private final SegurosService segurosService;
     public SeguroController(SegurosService segurosService) {
         this.segurosService = segurosService;
     }
 
     @GetMapping
-    public ResponseEntity<List<?>> getAllSeguros() {
+    public ResponseEntity<List<SeguroDTO>> getAllSeguros() {
         try {
             List<SeguroDTO> seguros = segurosService.getAll();
             return new ResponseEntity<>(seguros, HttpStatus.OK);
@@ -32,7 +34,7 @@ public class SeguroController {
     }
 
     @GetMapping("/{idSeguro}")
-    public ResponseEntity<?> getSeguroById(@PathVariable String idSeguro) {
+    public ResponseEntity<SeguroDTO> getSeguroById(@PathVariable String idSeguro) {
         try {
             SeguroDTO seguro = segurosService.getById(idSeguro);
             return new ResponseEntity<>(seguro, HttpStatus.OK);
@@ -46,7 +48,7 @@ public class SeguroController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createSeguro(@RequestBody SeguroDTO seguroDTO) {
+    public ResponseEntity<SeguroDTO> createSeguro(@RequestBody SeguroDTO seguroDTO) {
         try {
             SeguroDTO creado = segurosService.createSeguro(seguroDTO);
             return new ResponseEntity<>(creado, HttpStatus.CREATED);
@@ -58,23 +60,21 @@ public class SeguroController {
     }
 
     @PutMapping("/{idSeguro}")
-    public ResponseEntity<?> updateSeguro(@PathVariable String idSeguro, @RequestBody SeguroDTO seguroDTO) {
+    public ResponseEntity<SeguroDTO> updateSeguro(@PathVariable String idSeguro, @RequestBody SeguroDTO seguroDTO) {
         try {
             SeguroDTO actualizado = segurosService.updateSeguro(idSeguro, seguroDTO);
             return new ResponseEntity<>(actualizado, HttpStatus.OK);
-        } catch (BadRequestException ex) {
+        }  catch (BadRequestException | ValidationException ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } catch (ValidationException ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/{idSeguro}")
-    public ResponseEntity<?> deleteSeguro(@PathVariable String idSeguro) {
+    public ResponseEntity<SeguroDTO> deleteSeguro(@PathVariable String idSeguro) {
         try {
             segurosService.deleteSeguro(idSeguro);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

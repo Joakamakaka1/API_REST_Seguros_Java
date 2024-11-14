@@ -1,6 +1,7 @@
 package com.es.segurosinseguros.utils;
 
 import com.es.segurosinseguros.dto.SeguroDTO;
+import com.es.segurosinseguros.exception.ResourceNotFoundException;
 import com.es.segurosinseguros.exception.ValidationException;
 
 public class SeguroValidator {
