@@ -1,7 +1,6 @@
 package com.es.segurosinseguros.utils;
 
 import org.springframework.stereotype.Component;
-
 @Component
 public class StringToLong {
 

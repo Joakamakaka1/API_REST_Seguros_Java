@@ -34,6 +34,6 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorMsgForClient handleGenericException(HttpServletRequest request, Exception ex) {
-        return new ErrorMsgForClient(ex.getMessage(), request.getRequestURI());
+        return new ErrorMsgForClient("Ocurrió un error inesperado. Intenta nuevamente.", request.getRequestURI());
     }
 }

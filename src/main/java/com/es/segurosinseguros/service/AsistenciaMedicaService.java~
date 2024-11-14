@@ -36,7 +36,7 @@ public class AsistenciaMedicaService {
             asistenciaMedicas.forEach(asistenciaMedica -> asistenciaMedicaDTOS.add(mapper.mapToDto(asistenciaMedica)));
             return asistenciaMedicaDTOS;
         } catch (ResourceNotFoundException ex) {
-            throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
+            throw ex;
         } catch (Exception e) {
             throw new GenericException("Error inesperado al obtener las asistencias médicas: " + e.getMessage());
         }
@@ -54,7 +54,7 @@ public class AsistenciaMedicaService {
             }
             return mapper.mapToDto(asistenciaMedica);
         } catch (BadRequestException | ResourceNotFoundException ex) {
-            throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
+            throw ex;
         } catch (Exception e) {
             throw new GenericException("Error inesperado al obtener la asistencia médica: " + e.getMessage());
         }
@@ -70,7 +70,7 @@ public class AsistenciaMedicaService {
             asistenciaMedicaRepository.save(asistenciaMedica);
             return mapper.mapToDto(asistenciaMedica);
         } catch (BadRequestException | ValidationException ex) {
-            throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
+            throw ex;
         } catch (Exception e) {
             throw new GenericException("Error inesperado al crear la asistencia médica: " + e.getMessage());
         }
@@ -95,7 +95,7 @@ public class AsistenciaMedicaService {
             asistenciaMedicaRepository.save(asistenciaMedicaActualizada);
             return mapper.mapToDto(asistenciaMedicaActualizada);
         } catch (BadRequestException | ValidationException | ResourceNotFoundException ex) {
-            throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
+            throw ex;
         } catch (Exception e) {
             throw new GenericException("Error inesperado al actualizar la asistencia médica: " + e.getMessage());
         }
@@ -112,7 +112,7 @@ public class AsistenciaMedicaService {
             }
             asistenciaMedicaRepository.deleteById(idLong);
         } catch (BadRequestException | ResourceNotFoundException ex) {
-            throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
+            throw ex;
         } catch (Exception e) {
             throw new GenericException("Error inesperado al eliminar la asistencia médica: " + e.getMessage());
         }
