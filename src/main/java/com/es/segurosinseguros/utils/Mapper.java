@@ -6,8 +6,17 @@ import com.es.segurosinseguros.model.AsistenciaMedica;
 import com.es.segurosinseguros.model.Seguro;
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Mapper.
+ */
 @Component
 public class Mapper {
+    /**
+     * Map to entity seguro.
+     *
+     * @param seguroDTO the seguro dto
+     * @return the seguro
+     */
     public Seguro mapToEntity(SeguroDTO seguroDTO) {
         Seguro seguro = new Seguro();
         seguro.setNif(seguroDTO.getNif());
@@ -22,6 +31,12 @@ public class Mapper {
         return seguro;
     }
 
+    /**
+     * Map to dto seguro dto.
+     *
+     * @param seguro the seguro
+     * @return the seguro dto
+     */
     public SeguroDTO mapToDto(Seguro seguro) {
         SeguroDTO seguroDTO = new SeguroDTO();
         seguroDTO.setNif(seguro.getNif());
@@ -36,6 +51,12 @@ public class Mapper {
         return seguroDTO;
     }
 
+    /**
+     * Map to entity asistencia medica.
+     *
+     * @param asistenciaMedicaDTO the asistencia medica dto
+     * @return the asistencia medica
+     */
     public AsistenciaMedica mapToEntity(AsistenciaMedicaDTO asistenciaMedicaDTO) {
         AsistenciaMedica asistenciaMedica = new AsistenciaMedica();
         asistenciaMedica.setFecha(asistenciaMedicaDTO.getFecha());
@@ -46,6 +67,12 @@ public class Mapper {
         return asistenciaMedica;
     }
 
+    /**
+     * Map to dto asistencia medica dto.
+     *
+     * @param asistenciaMedica the asistencia medica
+     * @return the asistencia medica dto
+     */
     public AsistenciaMedicaDTO mapToDto(AsistenciaMedica asistenciaMedica) {
         AsistenciaMedicaDTO asistenciaMedicaDTO = new AsistenciaMedicaDTO();
         asistenciaMedicaDTO.setFecha(asistenciaMedica.getFecha());

@@ -7,8 +7,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * The type Rest exception handler.
+ */
 @ControllerAdvice
 public class RestExceptionHandler {
+    /**
+     * Handle bad request exception error msg for client.
+     *
+     * @param request the request
+     * @param ex      the ex
+     * @return the error msg for client
+     */
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -16,6 +26,13 @@ public class RestExceptionHandler {
         return new ErrorMsgForClient(ex.getMessage(), request.getRequestURI());
     }
 
+    /**
+     * Handle validation exception error msg for client.
+     *
+     * @param request the request
+     * @param ex      the ex
+     * @return the error msg for client
+     */
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -23,6 +40,13 @@ public class RestExceptionHandler {
         return new ErrorMsgForClient(ex.getMessage(), request.getRequestURI());
     }
 
+    /**
+     * Handle resource not found exception error msg for client.
+     *
+     * @param request the request
+     * @param ex      the ex
+     * @return the error msg for client
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
@@ -30,6 +54,13 @@ public class RestExceptionHandler {
         return new ErrorMsgForClient(ex.getMessage(), request.getRequestURI());
     }
 
+    /**
+     * Handle generic exception error msg for client.
+     *
+     * @param request the request
+     * @param ex      the ex
+     * @return the error msg for client
+     */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody

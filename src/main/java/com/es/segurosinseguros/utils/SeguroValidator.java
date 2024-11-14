@@ -1,11 +1,19 @@
 package com.es.segurosinseguros.utils;
 
 import com.es.segurosinseguros.dto.SeguroDTO;
-import com.es.segurosinseguros.exception.ResourceNotFoundException;
 import com.es.segurosinseguros.exception.ValidationException;
 
+/**
+ * The type Seguro validator.
+ */
 public class SeguroValidator {
 
+    /**
+     * Validate seguro.
+     *
+     * @param seguroDTO the seguro dto
+     * @throws ValidationException the validation exception
+     */
     public static void validateSeguro(SeguroDTO seguroDTO) throws ValidationException {
         if (seguroDTO.getNif() == null || !seguroDTO.getNif().matches("^[A-Z0-9]{8}[A-Z]$"))
             throw new ValidationException("El NIF debe tener un formato válido");

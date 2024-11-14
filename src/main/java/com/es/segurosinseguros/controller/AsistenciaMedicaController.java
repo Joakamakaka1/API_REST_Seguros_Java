@@ -12,16 +12,29 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * The type Asistencia medica controller.
+ */
 @RestController
 @RequestMapping("/asistencias")
 public class AsistenciaMedicaController {
     @Autowired
     private final AsistenciaMedicaService asistenciaMedicaService;
 
+    /**
+     * Instantiates a new Asistencia medica controller.
+     *
+     * @param asistenciaMedicaService the asistencia medica service
+     */
     public AsistenciaMedicaController(AsistenciaMedicaService asistenciaMedicaService) {
         this.asistenciaMedicaService = asistenciaMedicaService;
     }
 
+    /**
+     * Gets all asistencias medicas.
+     *
+     * @return the all asistencias medicas
+     */
     @GetMapping
     public ResponseEntity<List<AsistenciaMedicaDTO>> getAllAsistenciasMedicas() {
         try {
@@ -34,6 +47,12 @@ public class AsistenciaMedicaController {
         }
     }
 
+    /**
+     * Gets asistencia medica by id.
+     *
+     * @param idAsistenciaMedica the id asistencia medica
+     * @return the asistencia medica by id
+     */
     @GetMapping("/{idAsistenciaMedica}")
     public ResponseEntity<AsistenciaMedicaDTO> getAsistenciaMedicaById(@PathVariable String idAsistenciaMedica) {
         try {
@@ -48,6 +67,12 @@ public class AsistenciaMedicaController {
         }
     }
 
+    /**
+     * Create asistencia medica response entity.
+     *
+     * @param asistenciaMedicaDTO the asistencia medica dto
+     * @return the response entity
+     */
     @PostMapping
     public ResponseEntity<AsistenciaMedicaDTO> createAsistenciaMedica(@RequestBody AsistenciaMedicaDTO asistenciaMedicaDTO) {
         try {
@@ -60,6 +85,13 @@ public class AsistenciaMedicaController {
         }
     }
 
+    /**
+     * Update asistencia medica response entity.
+     *
+     * @param idAsistenciaMedica  the id asistencia medica
+     * @param asistenciaMedicaDTO the asistencia medica dto
+     * @return the response entity
+     */
     @PutMapping("/{idAsistenciaMedica}")
     public ResponseEntity<AsistenciaMedicaDTO> updateAsistenciaMedica(@PathVariable String idAsistenciaMedica, @RequestBody AsistenciaMedicaDTO asistenciaMedicaDTO) {
         try {
@@ -74,6 +106,12 @@ public class AsistenciaMedicaController {
         }
     }
 
+    /**
+     * Delete asistencia medica response entity.
+     *
+     * @param idAsistenciaMedica the id asistencia medica
+     * @return the response entity
+     */
     @DeleteMapping("/{idAsistenciaMedica}")
     public ResponseEntity<AsistenciaMedicaDTO> deleteAsistenciaMedica(@PathVariable String idAsistenciaMedica) {
         try {

@@ -15,17 +15,31 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Asistencia medica service.
+ */
 @Service
 public class AsistenciaMedicaService {
 
     private final AsistenciaMedicaRepository asistenciaMedicaRepository;
     private Mapper mapper;
 
+    /**
+     * Instantiates a new Asistencia medica service.
+     *
+     * @param asistenciaMedicaRepository the asistencia medica repository
+     * @param mapper                     the mapper
+     */
     public AsistenciaMedicaService(AsistenciaMedicaRepository asistenciaMedicaRepository, Mapper mapper) {
         this.asistenciaMedicaRepository = asistenciaMedicaRepository;
         this.mapper = mapper;
     }
 
+    /**
+     * Gets all.
+     *
+     * @return the all
+     */
     public List<AsistenciaMedicaDTO> getAll() {
         try {
             List<AsistenciaMedica> asistenciaMedicas = asistenciaMedicaRepository.findAll();
@@ -42,6 +56,12 @@ public class AsistenciaMedicaService {
         }
     }
 
+    /**
+     * Gets by id.
+     *
+     * @param idAsistenciaMedica the id asistencia medica
+     * @return the by id
+     */
     public AsistenciaMedicaDTO getById(String idAsistenciaMedica) {
         try {
             if (idAsistenciaMedica == null || idAsistenciaMedica.isBlank()) {
@@ -60,6 +80,12 @@ public class AsistenciaMedicaService {
         }
     }
 
+    /**
+     * Create asistencia medica asistencia medica dto.
+     *
+     * @param asistenciaMedicaDTO the asistencia medica dto
+     * @return the asistencia medica dto
+     */
     public AsistenciaMedicaDTO createAsistenciaMedica(AsistenciaMedicaDTO asistenciaMedicaDTO) {
         try {
             if (asistenciaMedicaDTO == null) {
@@ -76,6 +102,13 @@ public class AsistenciaMedicaService {
         }
     }
 
+    /**
+     * Update asistencia medica asistencia medica dto.
+     *
+     * @param idAsistenciaMedica  the id asistencia medica
+     * @param asistenciaMedicaDTO the asistencia medica dto
+     * @return the asistencia medica dto
+     */
     public AsistenciaMedicaDTO updateAsistenciaMedica(String idAsistenciaMedica, AsistenciaMedicaDTO asistenciaMedicaDTO) {
         try {
             if (idAsistenciaMedica == null || idAsistenciaMedica.isBlank()) {
@@ -101,6 +134,11 @@ public class AsistenciaMedicaService {
         }
     }
 
+    /**
+     * Delete asistencia medica.
+     *
+     * @param idAsistenciaMedica the id asistencia medica
+     */
     public void deleteAsistenciaMedica(String idAsistenciaMedica) {
         try {
             if (idAsistenciaMedica == null || idAsistenciaMedica.isBlank()) {

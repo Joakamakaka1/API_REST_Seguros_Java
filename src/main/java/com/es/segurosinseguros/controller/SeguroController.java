@@ -12,15 +12,29 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * The type Seguro controller.
+ */
 @RestController
 @RequestMapping("/seguros") // -> http://localhost:8080/seguros
 public class SeguroController {
     @Autowired
     private final SegurosService segurosService;
+
+    /**
+     * Instantiates a new Seguro controller.
+     *
+     * @param segurosService the seguros service
+     */
     public SeguroController(SegurosService segurosService) {
         this.segurosService = segurosService;
     }
 
+    /**
+     * Gets all seguros.
+     *
+     * @return the all seguros
+     */
     @GetMapping
     public ResponseEntity<List<SeguroDTO>> getAllSeguros() {
         try {
@@ -33,6 +47,12 @@ public class SeguroController {
         }
     }
 
+    /**
+     * Gets seguro by id.
+     *
+     * @param idSeguro the id seguro
+     * @return the seguro by id
+     */
     @GetMapping("/{idSeguro}")
     public ResponseEntity<SeguroDTO> getSeguroById(@PathVariable String idSeguro) {
         try {
@@ -47,6 +67,12 @@ public class SeguroController {
         }
     }
 
+    /**
+     * Create seguro response entity.
+     *
+     * @param seguroDTO the seguro dto
+     * @return the response entity
+     */
     @PostMapping
     public ResponseEntity<SeguroDTO> createSeguro(@RequestBody SeguroDTO seguroDTO) {
         try {
@@ -59,6 +85,13 @@ public class SeguroController {
         }
     }
 
+    /**
+     * Update seguro response entity.
+     *
+     * @param idSeguro  the id seguro
+     * @param seguroDTO the seguro dto
+     * @return the response entity
+     */
     @PutMapping("/{idSeguro}")
     public ResponseEntity<SeguroDTO> updateSeguro(@PathVariable String idSeguro, @RequestBody SeguroDTO seguroDTO) {
         try {
@@ -73,6 +106,12 @@ public class SeguroController {
         }
     }
 
+    /**
+     * Delete seguro response entity.
+     *
+     * @param idSeguro the id seguro
+     * @return the response entity
+     */
     @DeleteMapping("/{idSeguro}")
     public ResponseEntity<SeguroDTO> deleteSeguro(@PathVariable String idSeguro) {
         try {
