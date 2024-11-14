@@ -58,7 +58,7 @@ public class SeguroController {
     }
 
     @PutMapping("/{idSeguro}")
-    public ResponseEntity<?> updateSeguro(@PathVariable String idSeguro, @RequestBody SeguroDTO seguroDTO) {
+    public ResponseEntity<SeguroDTO> updateSeguro(@PathVariable String idSeguro, @RequestBody SeguroDTO seguroDTO) {
         try {
             SeguroDTO actualizado = segurosService.updateSeguro(idSeguro, seguroDTO);
             return new ResponseEntity<>(actualizado, HttpStatus.OK);
@@ -74,7 +74,7 @@ public class SeguroController {
     }
 
     @DeleteMapping("/{idSeguro}")
-    public ResponseEntity<?> deleteSeguro(@PathVariable String idSeguro) {
+    public ResponseEntity<Void> deleteSeguro(@PathVariable String idSeguro) {
         try {
             segurosService.deleteSeguro(idSeguro);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
