@@ -10,6 +10,7 @@ import com.es.segurosinseguros.repository.SegurosRepository;
 import com.es.segurosinseguros.utils.Mapper;
 import com.es.segurosinseguros.utils.SeguroValidator;
 import com.es.segurosinseguros.utils.StringToLong;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,19 +22,10 @@ import java.util.List;
 @Service
 public class SegurosService {
 
-    private final SegurosRepository seguroRepository;
-    private final Mapper mapper;
-
-    /**
-     * Instantiates a new Seguros service.
-     *
-     * @param seguroRepository the seguro repository
-     * @param mapper           the mapper
-     */
-    public SegurosService(SegurosRepository seguroRepository, Mapper mapper) {
-        this.seguroRepository = seguroRepository;
-        this.mapper = mapper;
-    }
+    @Autowired
+    private SegurosRepository seguroRepository;
+    @Autowired
+    private Mapper mapper;
 
     /**
      * Gets all.
@@ -42,12 +34,12 @@ public class SegurosService {
      */
     public List<SeguroDTO> getAll() {
         try {
-            List<Seguro> seguros = seguroRepository.findAll();
+            List<Seguro> seguros = seguroRepository.findAll(); // Lista con todos las seguros
             if (seguros.isEmpty()) {
                 throw new ResourceNotFoundException("No existen seguros en la base de datos");
             }
-            List<SeguroDTO> seguroDTOS = new ArrayList<>();
-            seguros.forEach(seguro -> seguroDTOS.add(mapper.mapToDto(seguro)));
+            List<SeguroDTO> seguroDTOS = new ArrayList<>(); // Lista con los DTOs de las seguros
+            seguros.forEach(seguro -> seguroDTOS.add(mapper.mapToDto(seguro))); // Mapeo de cada seguro a su DTO
             return seguroDTOS;
         } catch (ResourceNotFoundException ex) {
             throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
@@ -68,7 +60,7 @@ public class SegurosService {
                 throw new BadRequestException("El id del seguro no puede ser nulo o vacío");
             }
             Long idLong = StringToLong.stringToLong(idSeguro);
-            Seguro seguro = seguroRepository.findById(idLong).orElse(null);
+            Seguro seguro = seguroRepository.findById(idLong).orElse(null); // Busca el seguro en la base de datos
             if (seguro == null) {
                 throw new ResourceNotFoundException("No se encontró el seguro con ID: " + idSeguro);
             }
@@ -92,9 +84,9 @@ public class SegurosService {
                 throw new BadRequestException("El seguro no puede ser nulo");
             }
             SeguroValidator.validateSeguro(seguroDTO);
-            Seguro seguro = mapper.mapToEntity(seguroDTO);
-            seguroRepository.save(seguro);
-            return mapper.mapToDto(seguro);
+            Seguro seguro = mapper.mapToEntity(seguroDTO); // Mapeo de DTO a Entidad
+            seguroRepository.save(seguro); // Guarda el seguro
+            return mapper.mapToDto(seguro); // Mapeo de Entidad a DTO para mostrar el resultado
         } catch (BadRequestException | ValidationException ex) {
             throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
         } catch (Exception e) {
@@ -111,22 +103,21 @@ public class SegurosService {
      */
     public SeguroDTO updateSeguro(String idSeguro, SeguroDTO seguroDTO) {
         try {
-            if (idSeguro == null || idSeguro.isBlank()) {
+            if (idSeguro == null || idSeguro.isBlank()) { // Verifica si el id del seguro es nulo o vacio
                 throw new BadRequestException("El id del seguro no puede ser nulo o vacío");
             }
             Long idLong = StringToLong.stringToLong(idSeguro);
-            Seguro seguroExistente = seguroRepository.findById(idLong).orElse(null);
-            if (seguroExistente == null) {
+            if (!seguroRepository.existsById(idLong)) { // Verifica si el seguro existe en la base de datos
                 throw new ResourceNotFoundException("No se encontró el seguro con ID: " + idSeguro);
             }
             if (seguroDTO == null) {
                 throw new BadRequestException("El seguro no puede ser nulo");
             }
             SeguroValidator.validateSeguro(seguroDTO);
-            Seguro seguroActualizado = mapper.mapToEntity(seguroDTO);
-            seguroActualizado.setIdSeguro(idLong);
-            seguroRepository.save(seguroActualizado);
-            return mapper.mapToDto(seguroActualizado);
+            Seguro seguroActualizado = mapper.mapToEntity(seguroDTO); // Mapeo de DTO a Entidad
+            seguroActualizado.setIdSeguro(idLong); // Actualiza el id del seguro
+            seguroRepository.save(seguroActualizado); // Guarda el seguro
+            return mapper.mapToDto(seguroActualizado); // Mapeo de Entidad a DTO para mostrar el resultado
         } catch (BadRequestException | ValidationException | ResourceNotFoundException ex) {
             throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
         } catch (Exception e) {
@@ -141,11 +132,11 @@ public class SegurosService {
      */
     public void deleteSeguro(String idSeguro) {
         try {
-            if (idSeguro == null || idSeguro.isBlank()) {
+            if (idSeguro == null || idSeguro.isBlank()) { // Verifica si el id del seguro es nulo o vacio
                 throw new BadRequestException("El id del seguro no puede ser nulo o vacío");
             }
             Long idLong = StringToLong.stringToLong(idSeguro);
-            if (!seguroRepository.existsById(idLong)) {
+            if (!seguroRepository.existsById(idLong)) { // Verifica si el seguro existe en la base de datos
                 throw new ResourceNotFoundException("No se encontró el seguro con ID: " + idSeguro);
             }
             seguroRepository.deleteById(idLong);

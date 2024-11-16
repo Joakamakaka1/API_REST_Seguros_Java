@@ -16,30 +16,23 @@ import java.util.List;
  * The type Asistencia medica controller.
  */
 @RestController
-@RequestMapping("/asistencias")
+@RequestMapping("/asistencias") // -> http://localhost:8080/asistencias
 public class AsistenciaMedicaController {
     @Autowired
-    private final AsistenciaMedicaService asistenciaMedicaService;
-
-    /**
-     * Instantiates a new Asistencia medica controller.
-     *
-     * @param asistenciaMedicaService the asistencia medica service
-     */
-    public AsistenciaMedicaController(AsistenciaMedicaService asistenciaMedicaService) {
-        this.asistenciaMedicaService = asistenciaMedicaService;
-    }
+    private AsistenciaMedicaService asistenciaMedicaService;
 
     /**
      * Gets all asistencias medicas.
      *
      * @return the all asistencias medicas
      */
-    @GetMapping
+    @GetMapping // -> http://localhost:8080/asistencias
     public ResponseEntity<List<AsistenciaMedicaDTO>> getAllAsistenciasMedicas() {
         try {
-            List<AsistenciaMedicaDTO> asistenciasMedicas = asistenciaMedicaService.getAll();
-            return new ResponseEntity<>(asistenciasMedicas, HttpStatus.OK);
+            List<AsistenciaMedicaDTO> asistenciasMedicas = asistenciaMedicaService.getAll(); // Lista con todas las asistencias médicas
+            return new ResponseEntity<>(asistenciasMedicas, HttpStatus.OK); // Devuelve la lista de asistencias médicas
+        } catch (BadRequestException ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -53,11 +46,11 @@ public class AsistenciaMedicaController {
      * @param idAsistenciaMedica the id asistencia medica
      * @return the asistencia medica by id
      */
-    @GetMapping("/{idAsistenciaMedica}")
+    @GetMapping("/{idAsistenciaMedica}") // -> http://localhost:8080/asistencias/{idAsistenciaMedica}
     public ResponseEntity<AsistenciaMedicaDTO> getAsistenciaMedicaById(@PathVariable String idAsistenciaMedica) {
         try {
-            AsistenciaMedicaDTO asistenciaMedica = asistenciaMedicaService.getById(idAsistenciaMedica);
-            return new ResponseEntity<>(asistenciaMedica, HttpStatus.OK);
+            AsistenciaMedicaDTO asistenciaMedica = asistenciaMedicaService.getById(idAsistenciaMedica); // Busca la asistencia médica por su ID
+            return new ResponseEntity<>(asistenciaMedica, HttpStatus.OK); // Devuelve la asistencia medica
         } catch (BadRequestException ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
@@ -73,11 +66,11 @@ public class AsistenciaMedicaController {
      * @param asistenciaMedicaDTO the asistencia medica dto
      * @return the response entity
      */
-    @PostMapping
+    @PostMapping // -> http://localhost:8080/asistencias
     public ResponseEntity<AsistenciaMedicaDTO> createAsistenciaMedica(@RequestBody AsistenciaMedicaDTO asistenciaMedicaDTO) {
         try {
-            AsistenciaMedicaDTO creado = asistenciaMedicaService.createAsistenciaMedica(asistenciaMedicaDTO);
-            return new ResponseEntity<>(creado, HttpStatus.CREATED);
+            AsistenciaMedicaDTO creado = asistenciaMedicaService.createAsistenciaMedica(asistenciaMedicaDTO); // Crea la asistencia médica
+            return new ResponseEntity<>(creado, HttpStatus.CREATED); // Devuelve la asistencia médica creada
         } catch (BadRequestException | ValidationException ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
@@ -92,11 +85,11 @@ public class AsistenciaMedicaController {
      * @param asistenciaMedicaDTO the asistencia medica dto
      * @return the response entity
      */
-    @PutMapping("/{idAsistenciaMedica}")
+    @PutMapping("/{idAsistenciaMedica}") // -> http://localhost:8080/asistencias/{idAsistenciaMedica}
     public ResponseEntity<AsistenciaMedicaDTO> updateAsistenciaMedica(@PathVariable String idAsistenciaMedica, @RequestBody AsistenciaMedicaDTO asistenciaMedicaDTO) {
         try {
-            AsistenciaMedicaDTO actualizado = asistenciaMedicaService.updateAsistenciaMedica(idAsistenciaMedica, asistenciaMedicaDTO);
-            return new ResponseEntity<>(actualizado, HttpStatus.OK);
+            AsistenciaMedicaDTO actualizado = asistenciaMedicaService.updateAsistenciaMedica(idAsistenciaMedica, asistenciaMedicaDTO); // Actualiza la asistencia médica
+            return new ResponseEntity<>(actualizado, HttpStatus.OK); // Devuelve la asistencia médica actualizada
         } catch (BadRequestException | ValidationException ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
@@ -112,11 +105,11 @@ public class AsistenciaMedicaController {
      * @param idAsistenciaMedica the id asistencia medica
      * @return the response entity
      */
-    @DeleteMapping("/{idAsistenciaMedica}")
+    @DeleteMapping("/{idAsistenciaMedica}") // -> http://localhost:8080/asistencias/{idAsistenciaMedica}
     public ResponseEntity<AsistenciaMedicaDTO> deleteAsistenciaMedica(@PathVariable String idAsistenciaMedica) {
         try {
-            asistenciaMedicaService.deleteAsistenciaMedica(idAsistenciaMedica);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            asistenciaMedicaService.deleteAsistenciaMedica(idAsistenciaMedica); // Elimina la asistencia médica
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Devuelve la asistencia médica eliminada
         } catch (BadRequestException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {

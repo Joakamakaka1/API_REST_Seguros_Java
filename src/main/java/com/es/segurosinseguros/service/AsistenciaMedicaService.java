@@ -10,6 +10,7 @@ import com.es.segurosinseguros.repository.AsistenciaMedicaRepository;
 import com.es.segurosinseguros.utils.AsistenciaMedicaValidator;
 import com.es.segurosinseguros.utils.Mapper;
 import com.es.segurosinseguros.utils.StringToLong;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,19 +22,10 @@ import java.util.List;
 @Service
 public class AsistenciaMedicaService {
 
-    private final AsistenciaMedicaRepository asistenciaMedicaRepository;
+    @Autowired
+    private AsistenciaMedicaRepository asistenciaMedicaRepository;
+    @Autowired
     private Mapper mapper;
-
-    /**
-     * Instantiates a new Asistencia medica service.
-     *
-     * @param asistenciaMedicaRepository the asistencia medica repository
-     * @param mapper                     the mapper
-     */
-    public AsistenciaMedicaService(AsistenciaMedicaRepository asistenciaMedicaRepository, Mapper mapper) {
-        this.asistenciaMedicaRepository = asistenciaMedicaRepository;
-        this.mapper = mapper;
-    }
 
     /**
      * Gets all.
@@ -42,12 +34,12 @@ public class AsistenciaMedicaService {
      */
     public List<AsistenciaMedicaDTO> getAll() {
         try {
-            List<AsistenciaMedica> asistenciaMedicas = asistenciaMedicaRepository.findAll();
+            List<AsistenciaMedica> asistenciaMedicas = asistenciaMedicaRepository.findAll(); // Lista con todos las asistencias médicas
             if (asistenciaMedicas.isEmpty()) {
                 throw new ResourceNotFoundException("No existen asistencias médicas en la base de datos");
             }
-            List<AsistenciaMedicaDTO> asistenciaMedicaDTOS = new ArrayList<>();
-            asistenciaMedicas.forEach(asistenciaMedica -> asistenciaMedicaDTOS.add(mapper.mapToDto(asistenciaMedica)));
+            List<AsistenciaMedicaDTO> asistenciaMedicaDTOS = new ArrayList<>(); // Lista con los DTOs de las asistencias médicas
+            asistenciaMedicas.forEach(asistenciaMedica -> asistenciaMedicaDTOS.add(mapper.mapToDto(asistenciaMedica))); // Mapeo de cada asistencia médica a su DTO
             return asistenciaMedicaDTOS;
         } catch (ResourceNotFoundException ex) {
             throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
@@ -68,7 +60,7 @@ public class AsistenciaMedicaService {
                 throw new BadRequestException("El id de la asistencia médica no puede ser nulo o vacío");
             }
             Long idLong = StringToLong.stringToLong(idAsistenciaMedica);
-            AsistenciaMedica asistenciaMedica = asistenciaMedicaRepository.findById(idLong).orElse(null);
+            AsistenciaMedica asistenciaMedica = asistenciaMedicaRepository.findById(idLong).orElse(null); // Busca la asistencia médica por su ID
             if (asistenciaMedica == null) {
                 throw new ResourceNotFoundException("No se encontró la asistencia médica con ID: " + idAsistenciaMedica);
             }
@@ -92,9 +84,9 @@ public class AsistenciaMedicaService {
                 throw new BadRequestException("La asistencia médica no puede ser nula");
             }
             AsistenciaMedicaValidator.validateAsistenciaMedica(asistenciaMedicaDTO);
-            AsistenciaMedica asistenciaMedica = mapper.mapToEntity(asistenciaMedicaDTO);
-            asistenciaMedicaRepository.save(asistenciaMedica);
-            return mapper.mapToDto(asistenciaMedica);
+            AsistenciaMedica asistenciaMedica = mapper.mapToEntity(asistenciaMedicaDTO); // Mapeo del DTO a la entidad
+            asistenciaMedicaRepository.save(asistenciaMedica); // Guarda la asistencia médica
+            return mapper.mapToDto(asistenciaMedica); // Mapeo de la entidad a su DTO
         } catch (BadRequestException | ValidationException ex) {
             throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
         } catch (Exception e) {
@@ -111,22 +103,21 @@ public class AsistenciaMedicaService {
      */
     public AsistenciaMedicaDTO updateAsistenciaMedica(String idAsistenciaMedica, AsistenciaMedicaDTO asistenciaMedicaDTO) {
         try {
-            if (idAsistenciaMedica == null || idAsistenciaMedica.isBlank()) {
+            if (idAsistenciaMedica == null || idAsistenciaMedica.isBlank()) { // Verifica si el id de la asistencia médica es nulo o vacío
                 throw new BadRequestException("El id de la asistencia médica no puede ser nulo o vacío");
             }
             Long idLong = StringToLong.stringToLong(idAsistenciaMedica);
-            AsistenciaMedica asistenciaMedicaExistente = asistenciaMedicaRepository.findById(idLong).orElse(null);
-            if (asistenciaMedicaExistente == null) {
+            if (!asistenciaMedicaRepository.existsById(idLong)) { // Verifica si la asistencia médica existe en la base de datos
                 throw new ResourceNotFoundException("No se encontró la asistencia médica con ID: " + idAsistenciaMedica);
             }
             if (asistenciaMedicaDTO == null) {
                 throw new BadRequestException("La asistencia médica no puede ser nula");
             }
             AsistenciaMedicaValidator.validateAsistenciaMedica(asistenciaMedicaDTO);
-            AsistenciaMedica asistenciaMedicaActualizada = mapper.mapToEntity(asistenciaMedicaDTO);
-            asistenciaMedicaActualizada.setIdAsistenciaMedica(idLong);
-            asistenciaMedicaRepository.save(asistenciaMedicaActualizada);
-            return mapper.mapToDto(asistenciaMedicaActualizada);
+            AsistenciaMedica asistenciaMedicaActualizada = mapper.mapToEntity(asistenciaMedicaDTO); // Mapeo del DTO a la entidad
+            asistenciaMedicaActualizada.setIdAsistenciaMedica(idLong); // Actualiza el ID de la asistencia médica
+            asistenciaMedicaRepository.save(asistenciaMedicaActualizada); // Guarda la asistencia médica
+            return mapper.mapToDto(asistenciaMedicaActualizada); // Mapeo de la entidad a su DTO
         } catch (BadRequestException | ValidationException | ResourceNotFoundException ex) {
             throw ex; // Se vuelve a lanzar la excepción para que el RestExceptionHandler la maneje
         } catch (Exception e) {
@@ -141,11 +132,11 @@ public class AsistenciaMedicaService {
      */
     public void deleteAsistenciaMedica(String idAsistenciaMedica) {
         try {
-            if (idAsistenciaMedica == null || idAsistenciaMedica.isBlank()) {
+            if (idAsistenciaMedica == null || idAsistenciaMedica.isBlank()) { // Verifica si el id de la asistencia médica es nulo o vacío
                 throw new BadRequestException("El id de la asistencia médica no puede ser nulo o vacío");
             }
             Long idLong = StringToLong.stringToLong(idAsistenciaMedica);
-            if (!asistenciaMedicaRepository.existsById(idLong)) {
+            if (!asistenciaMedicaRepository.existsById(idLong)) { // Verifica si la asistencia médica existe en la base de datos
                 throw new ResourceNotFoundException("No se encontró la asistencia médica con ID: " + idAsistenciaMedica);
             }
             asistenciaMedicaRepository.deleteById(idLong);
