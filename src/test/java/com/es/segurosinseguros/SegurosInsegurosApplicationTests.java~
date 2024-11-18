@@ -1,0 +1,17 @@
+package com.es.segurosinseguros;
+
+import com.es.segurosinseguros.controller.SeguroController;
+import com.es.segurosinseguros.dto.SeguroDTO;
+import com.es.segurosinseguros.service.SegurosService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@SpringBootTest
+class SegurosInsegurosApplicationTests {
+    
+}
