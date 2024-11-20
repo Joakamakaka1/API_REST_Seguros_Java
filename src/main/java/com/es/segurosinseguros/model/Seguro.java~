@@ -9,7 +9,7 @@ import java.util.Date;
  * The type Seguro.
  */
 @Entity
-@Table(name = "seguros")
+@Table(name = "seguro")
 public class Seguro {
 
     @Id

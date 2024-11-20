@@ -2,6 +2,7 @@ package com.es.segurosinseguros.controller;
 
 import com.es.segurosinseguros.dto.AsistenciaMedicaDTO;
 import com.es.segurosinseguros.exception.BadRequestException;
+import com.es.segurosinseguros.exception.ErrorMsgForClient;
 import com.es.segurosinseguros.exception.ResourceNotFoundException;
 import com.es.segurosinseguros.exception.ValidationException;
 import com.es.segurosinseguros.service.AsistenciaMedicaService;
@@ -27,16 +28,19 @@ public class AsistenciaMedicaController {
      * @return the all asistencias medicas
      */
     @GetMapping // -> http://localhost:8080/asistencias
-    public ResponseEntity<List<AsistenciaMedicaDTO>> getAllAsistenciasMedicas() {
+    public ResponseEntity<?> getAllAsistenciasMedicas() {
         try {
             List<AsistenciaMedicaDTO> asistenciasMedicas = asistenciaMedicaService.getAll(); // Lista con todas las asistencias médicas
             return new ResponseEntity<>(asistenciasMedicas, HttpStatus.OK); // Devuelve la lista de asistencias médicas
         } catch (BadRequestException ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias");
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -47,16 +51,19 @@ public class AsistenciaMedicaController {
      * @return the asistencia medica by id
      */
     @GetMapping("/{idAsistenciaMedica}") // -> http://localhost:8080/asistencias/{idAsistenciaMedica}
-    public ResponseEntity<AsistenciaMedicaDTO> getAsistenciaMedicaById(@PathVariable String idAsistenciaMedica) {
+    public ResponseEntity<?> getAsistenciaMedicaById(@PathVariable String idAsistenciaMedica) {
         try {
             AsistenciaMedicaDTO asistenciaMedica = asistenciaMedicaService.getById(idAsistenciaMedica); // Busca la asistencia médica por su ID
             return new ResponseEntity<>(asistenciaMedica, HttpStatus.OK); // Devuelve la asistencia medica
         } catch (BadRequestException ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -67,14 +74,16 @@ public class AsistenciaMedicaController {
      * @return the response entity
      */
     @PostMapping // -> http://localhost:8080/asistencias
-    public ResponseEntity<AsistenciaMedicaDTO> createAsistenciaMedica(@RequestBody AsistenciaMedicaDTO asistenciaMedicaDTO) {
+    public ResponseEntity<?> createAsistenciaMedica(@RequestBody AsistenciaMedicaDTO asistenciaMedicaDTO) {
         try {
             AsistenciaMedicaDTO creado = asistenciaMedicaService.createAsistenciaMedica(asistenciaMedicaDTO); // Crea la asistencia médica
             return new ResponseEntity<>(creado, HttpStatus.CREATED); // Devuelve la asistencia médica creada
         } catch (BadRequestException | ValidationException ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias");
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -86,16 +95,19 @@ public class AsistenciaMedicaController {
      * @return the response entity
      */
     @PutMapping("/{idAsistenciaMedica}") // -> http://localhost:8080/asistencias/{idAsistenciaMedica}
-    public ResponseEntity<AsistenciaMedicaDTO> updateAsistenciaMedica(@PathVariable String idAsistenciaMedica, @RequestBody AsistenciaMedicaDTO asistenciaMedicaDTO) {
+    public ResponseEntity<?> updateAsistenciaMedica(@PathVariable String idAsistenciaMedica, @RequestBody AsistenciaMedicaDTO asistenciaMedicaDTO) {
         try {
             AsistenciaMedicaDTO actualizado = asistenciaMedicaService.updateAsistenciaMedica(idAsistenciaMedica, asistenciaMedicaDTO); // Actualiza la asistencia médica
             return new ResponseEntity<>(actualizado, HttpStatus.OK); // Devuelve la asistencia médica actualizada
         } catch (BadRequestException | ValidationException ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -106,16 +118,19 @@ public class AsistenciaMedicaController {
      * @return the response entity
      */
     @DeleteMapping("/{idAsistenciaMedica}") // -> http://localhost:8080/asistencias/{idAsistenciaMedica}
-    public ResponseEntity<AsistenciaMedicaDTO> deleteAsistenciaMedica(@PathVariable String idAsistenciaMedica) {
+    public ResponseEntity<?> deleteAsistenciaMedica(@PathVariable String idAsistenciaMedica) {
         try {
             asistenciaMedicaService.deleteAsistenciaMedica(idAsistenciaMedica); // Elimina la asistencia médica
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Devuelve la asistencia médica eliminada
         } catch (BadRequestException ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }   
 }

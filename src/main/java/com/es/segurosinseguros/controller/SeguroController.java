@@ -2,6 +2,7 @@ package com.es.segurosinseguros.controller;
 
 import com.es.segurosinseguros.dto.SeguroDTO;
 import com.es.segurosinseguros.exception.BadRequestException;
+import com.es.segurosinseguros.exception.ErrorMsgForClient;
 import com.es.segurosinseguros.exception.ResourceNotFoundException;
 import com.es.segurosinseguros.exception.ValidationException;
 import com.es.segurosinseguros.service.SegurosService;
@@ -27,16 +28,19 @@ public class SeguroController {
      * @return the all seguros
      */
     @GetMapping // -> http://localhost:8080/seguros
-    public ResponseEntity<List<SeguroDTO>> getAllSeguros() {
+    public ResponseEntity<?> getAllSeguros() {
         try {
             List<SeguroDTO> seguros = segurosService.getAll(); // Lista con todos los seguros
             return new ResponseEntity<>(seguros, HttpStatus.OK); // Devuelve la lista de seguros
         } catch (BadRequestException ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros");
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -47,16 +51,19 @@ public class SeguroController {
      * @return the seguro by id
      */
     @GetMapping("/{idSeguro}") // -> http://localhost:8080/seguros/{idSeguro}
-    public ResponseEntity<SeguroDTO> getSeguroById(@PathVariable String idSeguro) {
+    public ResponseEntity<?> getSeguroById(@PathVariable String idSeguro) {
         try {
             SeguroDTO seguro = segurosService.getById(idSeguro); // Busca el seguro en la base de datos
             return new ResponseEntity<>(seguro, HttpStatus.OK); // Devuelve el seguro
         } catch (BadRequestException ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros/" + idSeguro);
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros/" + idSeguro);
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros/" + idSeguro);
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -67,14 +74,16 @@ public class SeguroController {
      * @return the response entity
      */
     @PostMapping // -> http://localhost:8080/seguros
-    public ResponseEntity<SeguroDTO> createSeguro(@RequestBody SeguroDTO seguroDTO) {
+    public ResponseEntity<?> createSeguro(@RequestBody SeguroDTO seguroDTO) {
         try {
             SeguroDTO creado = segurosService.createSeguro(seguroDTO); // Crea el seguro
             return new ResponseEntity<>(creado, HttpStatus.CREATED); // Devuelve el seguro creado
         } catch (BadRequestException | ValidationException ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros");
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -86,16 +95,19 @@ public class SeguroController {
      * @return the response entity
      */
     @PutMapping("/{idSeguro}") // -> http://localhost:8080/seguros/{idSeguro}
-    public ResponseEntity<SeguroDTO> updateSeguro(@PathVariable String idSeguro, @RequestBody SeguroDTO seguroDTO) {
+    public ResponseEntity<?> updateSeguro(@PathVariable String idSeguro, @RequestBody SeguroDTO seguroDTO) {
         try {
             SeguroDTO actualizado = segurosService.updateSeguro(idSeguro, seguroDTO); // Actualiza el seguro
             return new ResponseEntity<>(actualizado, HttpStatus.OK); // Devuelve el seguro actualizado
         } catch (BadRequestException | ValidationException ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros/" + idSeguro);
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros/" + idSeguro);
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros/" + idSeguro);
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -106,16 +118,19 @@ public class SeguroController {
      * @return the response entity
      */
     @DeleteMapping("/{idSeguro}") // -> http://localhost:8080/seguros/{idSeguro}
-    public ResponseEntity<SeguroDTO> deleteSeguro(@PathVariable String idSeguro) {
+    public ResponseEntity<?> deleteSeguro(@PathVariable String idSeguro) {
         try {
             segurosService.deleteSeguro(idSeguro); // Elimina el seguro
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Devuelve el seguro eliminado
         } catch (BadRequestException ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros/" + idSeguro);
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros/" + idSeguro);
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/seguros/" + idSeguro);
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

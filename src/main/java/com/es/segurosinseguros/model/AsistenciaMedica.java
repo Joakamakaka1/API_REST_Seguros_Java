@@ -10,7 +10,7 @@ import java.time.LocalTime;
  * The type Asistencia medica.
  */
 @Entity
-@Table(name = "asistencia_medica")
+@Table(name = "asistencias_medicas")
 public class AsistenciaMedica {
 
     @Id
