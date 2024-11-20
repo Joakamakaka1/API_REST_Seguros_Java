@@ -64,6 +64,8 @@ public class Mapper {
         asistenciaMedica.setLugar(asistenciaMedicaDTO.getLugar());
         asistenciaMedica.setImporte(asistenciaMedicaDTO.getImporte());
         asistenciaMedica.setExplicacion(asistenciaMedicaDTO.getExplicacion());
+        asistenciaMedica.setBreveDescripcion(asistenciaMedicaDTO.getBreveDescripcion());
+        asistenciaMedica.setTipoAsistencia(asistenciaMedicaDTO.getTipoAsistencia());
         return asistenciaMedica;
     }
 
@@ -80,6 +82,8 @@ public class Mapper {
         asistenciaMedicaDTO.setLugar(asistenciaMedica.getLugar());
         asistenciaMedicaDTO.setImporte(asistenciaMedica.getImporte());
         asistenciaMedicaDTO.setExplicacion(asistenciaMedica.getExplicacion());
+        asistenciaMedicaDTO.setBreveDescripcion(asistenciaMedica.getBreveDescripcion());
+        asistenciaMedicaDTO.setTipoAsistencia(asistenciaMedica.getTipoAsistencia());
         return asistenciaMedicaDTO;
     }
 }

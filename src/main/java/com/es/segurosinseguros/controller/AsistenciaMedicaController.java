@@ -27,7 +27,7 @@ public class AsistenciaMedicaController {
      *
      * @return the all asistencias medicas
      */
-    @GetMapping // -> http://localhost:8080/asistencias
+        @GetMapping // -> http://localhost:8080/asistencias
     public ResponseEntity<?> getAllAsistenciasMedicas() {
         try {
             List<AsistenciaMedicaDTO> asistenciasMedicas = asistenciaMedicaService.getAll(); // Lista con todas las asistencias médicas
@@ -132,5 +132,5 @@ public class AsistenciaMedicaController {
             ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/asistencias/" + idAsistenciaMedica);
             return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }   
+    }
 }
