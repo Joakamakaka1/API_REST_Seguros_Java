@@ -16,7 +16,7 @@ public class AsistenciaMedica {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAsistenciaMedica;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idSeguro")
     private Seguro seguro;
     @Column(name = "breve_descripcion", nullable = false)

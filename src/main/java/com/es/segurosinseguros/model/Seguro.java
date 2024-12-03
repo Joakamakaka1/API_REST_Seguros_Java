@@ -3,72 +3,79 @@ package com.es.segurosinseguros.model;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 /**
+ * The type Seguro.
+ */
+/*
  * The type Seguro.
  */
 @Entity
 @Table(name = "seguros")
 public class Seguro {
-
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name = "id_seguro")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSeguro;
-    @Column(name = "nif", nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 10)
     private String nif;
-    @Column(name = "nombre", nullable = false)
+    @Column(nullable = false, length = 100)
     private String nombre;
-    @Column(name = "ape1", nullable = false)
+    @Column(nullable = false, length = 100)
     private String ape1;
-    @Column(name = "ape2")
+    @Column(length = 100)
     private String ape2;
-    @Column(name = "edad", nullable = false)
+    @Column(nullable = false)
     private int edad;
-    @Column(name = "num_hijos")
+    @Column(nullable = false)
     private int numHijos;
-    @Column(name = "sexo", nullable = false)
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDate fechaCreacion;
+    @Column(nullable = false, length = 10)
     private String sexo;
-    @Column(name = "casado", nullable = false)
-    private boolean casado;
-    @Column(name = "embarazada", nullable = false)
-    private boolean embarazada;
-    @Column(name = "fecha_creacion")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date fechaCreacion;
+    @Column(nullable = false)
+    private Boolean casado;
+    @Column(nullable = false)
+    private Boolean embarazada;
+    @OneToMany(mappedBy = "seguro", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<AsistenciaMedica> asistencias;
+    @OneToOne
+    @JoinColumn(name = "idUsuario")
+    private Usuario usuario;
 
     /**
      * Instantiates a new Seguro.
      *
-     * @param nif           the nif
-     * @param nombre        the nombre
-     * @param ape1          the ape 1
-     * @param ape2          the ape 2
-     * @param edad          the edad
-     * @param numHijos      the num hijos
-     * @param sexo          the sexo
-     * @param casado        the casado
-     * @param embarazada    the embarazada
-     * @param fechaCreacion the fecha creacion
+     * @param nif        the nif
+     * @param nombre     the nombre
+     * @param ape1       the ape 1
+     * @param ape2       the ape 2
+     * @param edad       the edad
+     * @param numHijos   the num hijos
+     * @param sexo       the sexo
+     * @param casado     the casado
+     * @param embarazada the embarazada
      */
-    public Seguro(String nif, String nombre, String ape1, String ape2, int edad, int numHijos, String sexo, boolean casado, boolean embarazada, Date fechaCreacion) {
+    public Seguro(String nif, String nombre, String ape1, String ape2, int edad, int numHijos, String sexo, Boolean casado, Boolean embarazada) {
         this.nif = nif;
         this.nombre = nombre;
         this.ape1 = ape1;
         this.ape2 = ape2;
         this.edad = edad;
         this.numHijos = numHijos;
+        this.fechaCreacion = LocalDate.now();
         this.sexo = sexo;
         this.casado = casado;
         this.embarazada = embarazada;
-        this.fechaCreacion = fechaCreacion;
     }
 
     /**
      * Instantiates a new Seguro.
      */
     public Seguro() {
+        this.fechaCreacion = LocalDate.now();
     }
 
     /**
@@ -198,6 +205,24 @@ public class Seguro {
     }
 
     /**
+     * Gets fecha creacion.
+     *
+     * @return the fecha creacion
+     */
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    /**
+     * Sets fecha creacion.
+     *
+     * @param fechaCreacion the fecha creacion
+     */
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    /**
      * Gets sexo.
      *
      * @return the sexo
@@ -216,11 +241,11 @@ public class Seguro {
     }
 
     /**
-     * Is casado boolean.
+     * Gets casado.
      *
-     * @return the boolean
+     * @return the casado
      */
-    public boolean isCasado() {
+    public Boolean getCasado() {
         return casado;
     }
 
@@ -229,16 +254,16 @@ public class Seguro {
      *
      * @param casado the casado
      */
-    public void setCasado(boolean casado) {
+    public void setCasado(Boolean casado) {
         this.casado = casado;
     }
 
     /**
-     * Is embarazada boolean.
+     * Gets embarazada.
      *
-     * @return the boolean
+     * @return the embarazada
      */
-    public boolean isEmbarazada() {
+    public Boolean getEmbarazada() {
         return embarazada;
     }
 
@@ -247,25 +272,7 @@ public class Seguro {
      *
      * @param embarazada the embarazada
      */
-    public void setEmbarazada(boolean embarazada) {
+    public void setEmbarazada(Boolean embarazada) {
         this.embarazada = embarazada;
-    }
-
-    /**
-     * Gets fecha creacion.
-     *
-     * @return the fecha creacion
-     */
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    /**
-     * Sets fecha creacion.
-     *
-     * @param fechaCreacion the fecha creacion
-     */
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
     }
 }

@@ -87,4 +87,6 @@ public class Mapper {
         asistenciaMedicaDTO.setTipoAsistencia(asistenciaMedica.getTipoAsistencia());
         return asistenciaMedicaDTO;
     }
+
+    public UsuarioDto
 }
