@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Usuario service.
+ */
 @Service
 public class UsuarioService implements UserDetailsService {
     @Autowired
@@ -46,6 +49,12 @@ public class UsuarioService implements UserDetailsService {
         return userDetails;
     }
 
+    /**
+     * Create user usuario register dto.
+     *
+     * @param userRegisterDTO the user register dto
+     * @return the usuario register dto
+     */
     public UsuarioRegisterDTO createUser(UsuarioRegisterDTO userRegisterDTO) {
         if (userRepository.findByUsername(userRegisterDTO.getUsername()).isPresent()) {
             throw new DuplicateException("El usuario ya existe");

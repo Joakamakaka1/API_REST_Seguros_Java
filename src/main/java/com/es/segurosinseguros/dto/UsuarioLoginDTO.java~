@@ -1,6 +1,0 @@
-package com.es.segurosinseguros.dto;
-
-public class UsuarioLoginDTO {
-    private String username;
-    private String password;
-}

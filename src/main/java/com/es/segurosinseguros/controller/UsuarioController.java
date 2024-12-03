@@ -16,9 +16,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The type Usuario controller.
+ */
 @RestController
+@RequestMapping("/usuarios") // -> http://localhost:8080/usuarios
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
@@ -27,6 +32,12 @@ public class UsuarioController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    /**
+     * Login string.
+     *
+     * @param usuarioLoginDTO the usuario login dto
+     * @return the string
+     */
     @PostMapping("/login") // -> http://localhost:8080/login
     public String login(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
         Authentication authentication = null;
@@ -35,7 +46,6 @@ public class UsuarioController {
                     new UsernamePasswordAuthenticationToken(usuarioLoginDTO.getUsername(), usuarioLoginDTO.getPassword())// modo de autenticación
             );
         } catch (Exception e) {
-            System.out.println("Excepcion en authentication");
             throw new ResourceNotFoundException("Credenciales del usuario incorrectas");
         }
 
@@ -51,18 +61,24 @@ public class UsuarioController {
         return token;
     }
 
+    /**
+     * Register response entity.
+     *
+     * @param usuarioRegisterDTO the usuario register dto
+     * @return the response entity
+     */
     @PostMapping("/register") // -> http://localhost:8080/register
     public ResponseEntity<?> register(@RequestBody UsuarioRegisterDTO usuarioRegisterDTO) {
-        try{
+        try {
             usuarioService.createUser(usuarioRegisterDTO);
             return new ResponseEntity<>(usuarioRegisterDTO, HttpStatus.CREATED);
-        }catch (BadRequestException ex){
+        } catch (BadRequestException ex) {
             ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/register");
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-        }catch (GenericException ex){
+        } catch (GenericException ex) {
             ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/register");
             return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-        }catch (ResourceNotFoundException ex){
+        } catch (ResourceNotFoundException ex) {
             ErrorMsgForClient error = new ErrorMsgForClient(ex.getMessage(), "/register");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
