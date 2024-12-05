@@ -15,41 +15,40 @@ public class Mapper {
     /**
      * Map to entity seguro.
      *
-     * @param seguroDTO the seguro dto
-     * @return the seguro
-     */
-    public Seguro mapToEntity(SeguroDTO seguroDTO) {
-        Seguro seguro = new Seguro();
-        seguro.setNif(seguroDTO.getNif());
-        seguro.setNombre(seguroDTO.getNombre());
-        seguro.setApe1(seguroDTO.getApe1());
-        seguro.setApe2(seguroDTO.getApe2());
-        seguro.setEdad(seguroDTO.getEdad());
-        seguro.setNumHijos(seguroDTO.getNumHijos());
-        seguro.setSexo(seguroDTO.getSexo());
-        seguro.setCasado(seguroDTO.isCasado());
-        seguro.setEmbarazada(seguroDTO.isEmbarazada());
-        return seguro;
-    }
-
-    /**
-     * Map to dto seguro dto.
-     *
      * @param seguro the seguro
-     * @return the seguro dto
+     * @return the seguro
      */
     public SeguroDTO mapToDto(Seguro seguro) {
         SeguroDTO seguroDTO = new SeguroDTO();
         seguroDTO.setNif(seguro.getNif());
-        seguroDTO.setNombre(seguro.getNombre());
         seguroDTO.setApe1(seguro.getApe1());
         seguroDTO.setApe2(seguro.getApe2());
+        seguroDTO.setNombre(seguro.getNombre());
         seguroDTO.setEdad(seguro.getEdad());
-        seguroDTO.setNumHijos(seguro.getNumHijos());
+        seguroDTO.setCasado(seguro.isCasado());
         seguroDTO.setSexo(seguro.getSexo());
-        seguroDTO.setCasado(seguro.getCasado());
-        seguroDTO.setEmbarazada(seguro.getEmbarazada());
+        seguroDTO.setId_usuario(seguro.getIdSeguro());
         return seguroDTO;
+    }
+
+    /**
+     * Map to seguro seguro.
+     *
+     * @param seguroDTO the seguro dto
+     * @param usuario   the usuario
+     * @return the seguro
+     */
+    public Seguro mapToSeguro(SeguroDTO seguroDTO, Usuario usuario) {
+        Seguro seguro = new Seguro();
+        seguro.setNif(seguroDTO.getNif());
+        seguro.setApe1(seguroDTO.getApe1());
+        seguro.setApe2(seguroDTO.getApe2());
+        seguro.setNombre(seguroDTO.getNombre());
+        seguro.setEdad(seguroDTO.getEdad());
+        seguro.setCasado(seguroDTO.isCasado());
+        seguro.setSexo(seguroDTO.getSexo());
+        seguro.setIdSeguro(seguroDTO.getId_usuario());
+        return seguro;
     }
 
     /**

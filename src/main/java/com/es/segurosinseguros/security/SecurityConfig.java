@@ -44,14 +44,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(crsf -> crsf.disable())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/usuarios/login", "/usuarios/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/seguros").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/seguros/{idSeguro}").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/seguros").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/seguros/{idSeguro}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/seguros/{idSeguro}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/asistencias").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/asistencias/{idAsistenciaMedica}").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/seguros/{idSeguro}/asistencias").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/asistencias/{idAsistenciaMedica}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/asistencias/{idAsistenciaMedica}").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt.decoder(jwtDecoder()))
-                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .build();
     }
 

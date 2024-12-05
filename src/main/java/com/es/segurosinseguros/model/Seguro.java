@@ -19,63 +19,66 @@ public class Seguro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSeguro;
-    @Column(nullable = false, unique = true, length = 10)
+    @Column(name = "nif", nullable = false, unique = true)
     private String nif;
-    @Column(nullable = false, length = 100)
+    @Column(name = "nombre", nullable = false)
     private String nombre;
-    @Column(nullable = false, length = 100)
+    @Column(name = "ape1", nullable = false)
     private String ape1;
-    @Column(length = 100)
+    @Column(name = "ape2")
     private String ape2;
-    @Column(nullable = false)
+    @Column(name = "edad", nullable = false)
     private int edad;
-    @Column(nullable = false)
+    @Column(name = "num_hijos")
     private int numHijos;
-    @Column(name = "fecha_creacion", nullable = false)
-    private LocalDate fechaCreacion;
-    @Column(nullable = false, length = 10)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "fecha_creacion")
+    private Date fechaCreacion;
+    @Column(name = "sexo", nullable = false)
     private String sexo;
-    @Column(nullable = false)
-    private Boolean casado;
-    @Column(nullable = false)
-    private Boolean embarazada;
+    @Column(name = "casado")
+    private boolean casado;
+    @Column(name = "embarazada")
+    private boolean embarazada;
     @OneToMany(mappedBy = "seguro", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<AsistenciaMedica> asistencias;
+    private List<AsistenciaMedica> asistenciaMedica;
     @OneToOne
-    @JoinColumn(name = "id_usuario", nullable = false, unique = true)
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-
-    /**
-     * Instantiates a new Seguro.
-     *
-     * @param nif        the nif
-     * @param nombre     the nombre
-     * @param ape1       the ape 1
-     * @param ape2       the ape 2
-     * @param edad       the edad
-     * @param numHijos   the num hijos
-     * @param sexo       the sexo
-     * @param casado     the casado
-     * @param embarazada the embarazada
-     */
-    public Seguro(String nif, String nombre, String ape1, String ape2, int edad, int numHijos, String sexo, Boolean casado, Boolean embarazada) {
-        this.nif = nif;
-        this.nombre = nombre;
-        this.ape1 = ape1;
-        this.ape2 = ape2;
-        this.edad = edad;
-        this.numHijos = numHijos;
-        this.fechaCreacion = LocalDate.now();
-        this.sexo = sexo;
-        this.casado = casado;
-        this.embarazada = embarazada;
-    }
 
     /**
      * Instantiates a new Seguro.
      */
     public Seguro() {
-        this.fechaCreacion = LocalDate.now();
+    }
+
+    /**
+     * Instantiates a new Seguro.
+     *
+     * @param embarazada    the embarazada
+     * @param casado        the casado
+     * @param sexo          the sexo
+     * @param fechaCreacion the fecha creacion
+     * @param numHijos      the num hijos
+     * @param edad          the edad
+     * @param ape2          the ape 2
+     * @param ape1          the ape 1
+     * @param nombre        the nombre
+     * @param nif           the nif
+     * @param idSeguro      the id seguro
+     */
+    public Seguro(boolean embarazada, boolean casado, String sexo, Date fechaCreacion, int numHijos, int edad, String ape2, String ape1, String nombre, String nif, Long idSeguro) {
+        this.embarazada = embarazada;
+        this.casado = casado;
+        this.sexo = sexo;
+        this.fechaCreacion = fechaCreacion;
+        this.numHijos = numHijos;
+        this.edad = edad;
+        this.ape2 = ape2;
+        this.ape1 = ape1;
+        this.nombre = nombre;
+        this.nif = nif;
+        this.idSeguro = idSeguro;
     }
 
     /**
@@ -209,7 +212,7 @@ public class Seguro {
      *
      * @return the fecha creacion
      */
-    public LocalDate getFechaCreacion() {
+    public Date getFechaCreacion() {
         return fechaCreacion;
     }
 
@@ -218,7 +221,7 @@ public class Seguro {
      *
      * @param fechaCreacion the fecha creacion
      */
-    public void setFechaCreacion(LocalDate fechaCreacion) {
+    public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
@@ -241,11 +244,11 @@ public class Seguro {
     }
 
     /**
-     * Gets casado.
+     * Is casado boolean.
      *
-     * @return the casado
+     * @return the boolean
      */
-    public Boolean getCasado() {
+    public boolean isCasado() {
         return casado;
     }
 
@@ -254,16 +257,16 @@ public class Seguro {
      *
      * @param casado the casado
      */
-    public void setCasado(Boolean casado) {
+    public void setCasado(boolean casado) {
         this.casado = casado;
     }
 
     /**
-     * Gets embarazada.
+     * Is embarazada boolean.
      *
-     * @return the embarazada
+     * @return the boolean
      */
-    public Boolean getEmbarazada() {
+    public boolean isEmbarazada() {
         return embarazada;
     }
 
@@ -272,7 +275,43 @@ public class Seguro {
      *
      * @param embarazada the embarazada
      */
-    public void setEmbarazada(Boolean embarazada) {
+    public void setEmbarazada(boolean embarazada) {
         this.embarazada = embarazada;
+    }
+
+    /**
+     * Gets asistencia medica.
+     *
+     * @return the asistencia medica
+     */
+    public List<AsistenciaMedica> getAsistenciaMedica() {
+        return asistenciaMedica;
+    }
+
+    /**
+     * Sets asistencia medica.
+     *
+     * @param asistenciaMedica the asistencia medica
+     */
+    public void setAsistenciaMedica(List<AsistenciaMedica> asistenciaMedica) {
+        this.asistenciaMedica = asistenciaMedica;
+    }
+
+    /**
+     * Gets usuario.
+     *
+     * @return the usuario
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    /**
+     * Sets usuario.
+     *
+     * @param usuario the usuario
+     */
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
