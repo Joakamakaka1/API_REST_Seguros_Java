@@ -31,10 +31,16 @@ public class UsuarioService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // BUSCO EL USUARIO POR SU NOMBRE EN LA BDD
         Usuario usuario = userRepository
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario No encontrado"));
 
+        /* RETORNAMOS UN USERDETAILS
+        El método loadUserByUsername nos fuerza a devolver un objeto de tipo UserDetails.
+        Tenemos que convertir nuestro objeto de tipo Usuario a un objeto de tipo UserDetails
+        ¡No os preocupéis, esto es siempre igual!
+         */
         List<GrantedAuthority> authorities = Arrays.stream(usuario.getRol().split(","))
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.trim()))
                 .collect(Collectors.toList());
@@ -59,22 +65,18 @@ public class UsuarioService implements UserDetailsService {
         if (userRepository.findByUsername(userRegisterDTO.getUsername()).isPresent()) {
             throw new DuplicateException("El usuario ya existe");
         }
-
-        if (!userRegisterDTO.getRol().equals("ROLE_ADMIN") && !userRegisterDTO.getRol().equals("ROLE_USER")) {
-            throw new BadRequestException("El rol debe ser ADMIN o USER");
-        }
-
         if (!userRegisterDTO.getPassword1().equals(userRegisterDTO.getPassword2())) {
-            throw new BadRequestException("Las contraseñas no coinciden");
+            throw new BadRequestException("Las contraseñas no coinciden");
+        }
+        if (!userRegisterDTO.getRol().equals("ROLE_ADMIN") && !userRegisterDTO.getRol().equals("ROLE_USER") ) {
+            throw new BadRequestException("El rol no es válido");
         }
 
-        Usuario newUsuario = new Usuario();
-        newUsuario.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword1())); // Hashear la contraseña
-        newUsuario.setUsername(userRegisterDTO.getUsername());
-        newUsuario.setRol(userRegisterDTO.getRol());
-
-        userRepository.save(newUsuario);
-
+        Usuario newUser = new Usuario();
+        newUser.setUsername(userRegisterDTO.getUsername());
+        newUser.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword1()));
+        newUser.setRol(userRegisterDTO.getRol());
+        userRepository.save(newUser);
         return userRegisterDTO;
     }
 }

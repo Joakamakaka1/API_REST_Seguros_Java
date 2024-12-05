@@ -42,7 +42,7 @@ public class Seguro {
     @OneToMany(mappedBy = "seguro", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<AsistenciaMedica> asistencias;
     @OneToOne
-    @JoinColumn(name = "id_usuario", nullable = false, unique = true)
+    @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
     /**

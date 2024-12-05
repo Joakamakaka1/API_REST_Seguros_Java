@@ -68,10 +68,10 @@ public class RestExceptionHandler {
         return new ErrorMsgForClient(ex.getMessage(), request.getRequestURI());
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(DuplicateException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
-    public ErrorMsgForClient handleDuplicateException(HttpServletRequest request, Exception ex) {
+    public ErrorMsgForClient handleDuplicateException(HttpServletRequest request, DuplicateException ex) {
         return new ErrorMsgForClient(ex.getMessage(), request.getRequestURI());
     }
 }
